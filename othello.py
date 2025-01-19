@@ -12,6 +12,7 @@ from tqdm import tqdm
 import os
 import argparse
 
+
 def init_board():
     board = np.zeros((8, 8))
     board[3, 3] = 1
@@ -182,7 +183,7 @@ def apply_moves(board, moves, initial_player):
                 )
         elif (r, c) == (-1, -1):
             raise ValueError(
-                f"Player {'@' if player == 1 else 'O'} should have played at {random.choice(moves)} but skipped turn."
+                f"Player {'@' if player == 1 else 'O'} should have played at {moves} but skipped turn."
             )
         elif (r, c) not in moves:
             raise ValueError(f"Legal moves are: {moves} but {move} was played.")
@@ -212,13 +213,24 @@ def _play_random_game():
     return moves_played
 
 
+def encode(tup):
+    x, y = tup
+    if tup == (-1, -1):
+        return "PASSS"
+    return f"{x}{y}"
+
+
 def generate_move_dataset(n_moves, save_dir, seed):
     random.seed(seed)
     os.makedirs(save_dir, exist_ok=True)
+    lines = []
     for i in tqdm(range(n_moves)):
         moves_played = _play_random_game()
-        moves_played = np.array([x + 8*y for (x, y) in moves_played], dtype=np.int8)
-        np.save(f"{save_dir}/game_{seed}_{i}.npy", moves_played)
+        line = " ".join([f"{encode(move)}" for move in moves_played])
+        lines.append(line)
+    with open(os.path.join(save_dir, f"moves_{seed}"), "w") as f:
+        f.write("\n".join(lines))
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
