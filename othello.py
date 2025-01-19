@@ -218,7 +218,7 @@ def generate_move_dataset(n_moves, save_dir, seed):
     for i in tqdm(range(n_moves)):
         moves_played = _play_random_game()
         moves_played = np.array([x + 8*y for (x, y) in moves_played], dtype=np.int8)
-        np.save(f"{save_dir}/game_{i}.npy", moves_played)
+        np.save(f"{save_dir}/game_{seed}_{i}.npy", moves_played)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
