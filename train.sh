@@ -1,0 +1,13 @@
+python train.py \
+    --data_dir ./data \
+    --max_seq_length 100 \
+    --num_proc 32 \
+    --lr 3e-4 \
+    --weight_decay 0.1 \
+    --beta1 0.9 \
+    --beta2 0.95 \
+    --checkpoint_dir ./checkpoints \
+    --log_dir ./logs \
+    --max_epochs 100 \
+    --gpus 1 \
+    --accelerator gpu
